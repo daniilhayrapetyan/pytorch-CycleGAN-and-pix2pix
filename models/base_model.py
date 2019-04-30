@@ -1,5 +1,6 @@
 import os
 import torch
+import torch.jit
 
 from collections import OrderedDict
 from abc import ABC, abstractmethod
@@ -162,7 +163,7 @@ class BaseModel(ABC):
                 traced_net = torch.jit.trace(net.cuda(), torch.randn(1, 3, 256, 256).cuda())
                 save_filename = '%s_net_%s.pt' % (epoch, name)
                 save_path = os.path.join(self.save_dir, save_filename)
-                torch.save(traced_net, save_path)
+                torch.jit.save(traced_net, save_path)
 
 
     def __patch_instance_norm_state_dict(self, state_dict, module, keys, i=0):
