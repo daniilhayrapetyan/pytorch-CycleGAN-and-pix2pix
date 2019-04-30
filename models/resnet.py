@@ -118,7 +118,6 @@ class ResnetBlock(nn.Module):
         self.conv_block.apply(nn.init.normal(0.0, 0.001))
 
 
-
 class InverseTanh(nn.Module):
 
     def __init__(self, epsilon=1e-5):
