@@ -1,5 +1,6 @@
 import os
 import torch
+
 from collections import OrderedDict
 from abc import ABC, abstractmethod
 from . import networks
@@ -154,9 +155,16 @@ class BaseModel(ABC):
 
                 if len(self.gpu_ids) > 0 and torch.cuda.is_available():
                     torch.save(net.module.cpu().state_dict(), save_path)
-                    net.cuda(self.gpu_ids[0])
                 else:
                     torch.save(net.cpu().state_dict(), save_path)
+
+                traced_net = torch.jit.trace(net.cpu(), torch.randn(1, 3, 256, 256))
+                save_filename = '%s_net_%s.pt' % (epoch, name)
+                save_path = os.path.join(self.save_dir, save_filename)
+                torch.save(traced_net, save_path)
+
+                if len(self.gpu_ids) > 0 and torch.cuda.is_available():
+                    net.cuda(self.gpu_ids[0])
 
     def __patch_instance_norm_state_dict(self, state_dict, module, keys, i=0):
         """Fix InstanceNorm checkpoints incompatibility (prior to 0.4)"""
