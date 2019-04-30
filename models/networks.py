@@ -72,7 +72,7 @@ def init_weights(net, init_type='normal', init_gain=0.02):
     def init_func(m):  # define the initialization function
         classname = m.__class__.__name__
         if hasattr(m, 'weight') and (classname.find('Conv') != -1 or classname.find('Linear') != -1):
-            if init_type == 'normal':
+            if init_type == 'normal' or init_type == 'identity':
                 init.normal_(m.weight.data, 0.0, init_gain)
             elif init_type == 'xavier':
                 init.xavier_normal_(m.weight.data, gain=init_gain)
@@ -89,7 +89,11 @@ def init_weights(net, init_type='normal', init_gain=0.02):
             init.constant_(m.bias.data, 0.0)
 
     print('initialize network with %s' % init_type)
-    net.apply(init_func)  # apply the initialization function <init_func>
+    if hasattr(net, "init_identity") and init_type == 'normal':
+        print("The model can be initialized as identity, doing it")
+        net.init_identity()
+    else:
+        net.apply(init_func)  # apply the initialization function <init_func>
 
 
 def init_net(net, init_type='normal', init_gain=0.02, gpu_ids=[]):
