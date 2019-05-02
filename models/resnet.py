@@ -75,7 +75,6 @@ class ResnetGenerator(nn.Module):
                 pass
 
 
-
 class ResnetBlock(nn.Module):
     """Define a Resnet block"""
 

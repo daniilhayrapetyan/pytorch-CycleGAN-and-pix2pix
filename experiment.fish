@@ -1,6 +1,6 @@
 python3 train.py \
 --dataset_mode texture \
---name expression-transfer \
+--name resnet-identity \
 --preprocess resize \
 --load_size 256 \
 --save_epoch_freq 1 \
