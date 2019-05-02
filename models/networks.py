@@ -3,7 +3,7 @@ import torch.nn as nn
 from torch.nn import init
 import functools
 from torch.optim import lr_scheduler
-from .resnet import ResnetGenerator
+from .resnet_identity import ResnetGeneratorIdentity
 
 
 ###############################################################################
@@ -89,10 +89,7 @@ def init_weights(net, init_type='normal', init_gain=0.02):
             init.constant_(m.bias.data, 0.0)
 
     print('initialize network with %s' % init_type)
-    if hasattr(net, "init_identity") and init_type == 'normal':
-        print("The model can be initialized as identity, doing it")
-        net.init_identity()
-    else:
+    if init_type != 'none':
         net.apply(init_func)  # apply the initialization function <init_func>
 
 
@@ -145,9 +142,9 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
     norm_layer = get_norm_layer(norm_type=norm)
 
     if netG == 'resnet_9blocks':
-        net = ResnetGenerator(input_nc, output_nc, ngf, norm_layer=norm_layer, use_dropout=use_dropout, n_blocks=9)
+        net = ResnetGeneratorIdentity(input_nc, output_nc, ngf, norm_layer=norm_layer, use_dropout=use_dropout, n_blocks=9)
     elif netG == 'resnet_6blocks':
-        net = ResnetGenerator(input_nc, output_nc, ngf, norm_layer=norm_layer, use_dropout=use_dropout, n_blocks=6)
+        net = ResnetGeneratorIdentity(input_nc, output_nc, ngf, norm_layer=norm_layer, use_dropout=use_dropout, n_blocks=6)
     elif netG == 'unet_128':
         net = UnetGenerator(input_nc, output_nc, 7, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
     elif netG == 'unet_256':
