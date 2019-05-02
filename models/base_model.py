@@ -159,7 +159,6 @@ class BaseModel(ABC):
                     net.cuda(self.gpu_ids[0])
                 else:
                     torch.save(net.cpu().state_dict(), save_path)
-
                 try:
                     net.eval()
                     traced_net = torch.jit.trace(net.cuda(), torch.randn(1, 3, 256, 256).cuda())
