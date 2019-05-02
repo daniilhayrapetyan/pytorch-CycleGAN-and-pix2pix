@@ -165,7 +165,7 @@ class BaseModel(ABC):
                     save_filename = '%s_net_%s.pt' % (epoch, name)
                     save_path = os.path.join(self.save_dir, save_filename)
                     net.train()
-                    torch.jit.save(traced_net, save_path)
+                    traced_net.save(save_path)
                 except Exception as e:
                     print("error saving model {}: {}".format(save_filename, e))
 
