@@ -9,6 +9,8 @@ class ResnetGenerator(nn.Module):
     We adapt Torch code and idea from Justin Johnson's neural style transfer project(https://github.com/jcjohnson/fast-neural-style)
     """
 
+    __constants__ = ['model']
+
     def __init__(self, input_nc, output_nc, ngf=64, norm_layer=nn.BatchNorm2d, use_dropout=False, n_blocks=6, padding_type='zero'):
         """Construct a Resnet-based generator
 
@@ -76,6 +78,8 @@ class ResnetGenerator(nn.Module):
 
 class ResnetBlock(nn.Module):
     """Define a Resnet block"""
+
+    __constants__ = ['conv_block']
 
     def __init__(self, dim, padding_type, norm_layer, use_dropout, use_bias):
         """Initialize the Resnet block

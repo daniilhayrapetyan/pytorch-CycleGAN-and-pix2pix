@@ -159,15 +159,6 @@ class BaseModel(ABC):
                     net.cuda(self.gpu_ids[0])
                 else:
                     torch.save(net.cpu().state_dict(), save_path)
-                try:
-                    net.eval()
-                    traced_net = torch.jit.trace(net.cuda(), torch.randn(1, 3, 256, 256).cuda())
-                    save_filename = '%s_net_%s.pt' % (epoch, name)
-                    save_path = os.path.join(self.save_dir, save_filename)
-                    net.train()
-                    torch.jit.save(traced_net, save_path)
-                except Exception as e:
-                    print("error saving model {}: {}".format(save_filename, e))
 
     def __patch_instance_norm_state_dict(self, state_dict, module, keys, i=0):
         """Fix InstanceNorm checkpoints incompatibility (prior to 0.4)"""
